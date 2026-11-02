@@ -563,6 +563,8 @@ L.AUTO_TIMER_OPTIONS = {
 	addscustom							= "Show timer for incoming adds (%ss)",
 	roleplay							= "Show timer for roleplay duration (%ss)"--This does need localizing though.
 }
+L.AUTO_TIMER_OPTIONS.cdcountnp			= L.AUTO_TIMER_OPTIONS.cdnpcount
+L.AUTO_TIMER_OPTIONS.nextcountnp		= L.AUTO_TIMER_OPTIONS.nextnpcount
 
 L.AUTO_ICONS_OPTION_TARGETS				= "Set icons on $spell:%s targets"--Usually used for player targets with no specific sorting
 L.AUTO_ICONS_OPTION_TARGETS_TANK_A		= "Set icons on $spell:%s targets with tank over melee over ranged priority and alphabetical fallback"
