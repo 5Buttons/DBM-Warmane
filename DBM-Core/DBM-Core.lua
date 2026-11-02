@@ -82,7 +82,7 @@ local function currentFullDate()
 end
 
 DBM = {
-	Revision = parseCurseDate("20260816213747"),
+	Revision = parseCurseDate("20261102221651"),
 	DisplayVersion = "10.1.13 alpha", -- the string that is shown as version
 	ReleaseRevision = releaseDate(2024, 07, 20) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 }
@@ -2572,6 +2572,7 @@ function DBM:LoadAllModDefaultOption(modId)
 	local profileNum = playerLevel > 9 and DBM_UseDualProfile and currentSpecGroup or 0
 	-- prevent nil table error
 	if not _G[savedVarsName] then _G[savedVarsName] = {} end
+	if not _G[savedVarsName][fullname] then _G[savedVarsName][fullname] = {} end
 	for _, id in ipairs(self.ModLists[modId]) do
 		-- prevent nil table error
 		if not _G[savedVarsName][fullname][id] then _G[savedVarsName][fullname][id] = {} end
@@ -2670,7 +2671,9 @@ function DBM:CopyAllModOption(modId, sourceName, sourceProfile)
 			return
 		end
 		-- prevent nil table error
+		if not _G[savedVarsName][targetName] then _G[savedVarsName][targetName] = {} end
 		if not _G[savedVarsName][targetName][id] then _G[savedVarsName][targetName][id] = {} end
+		if not _G[savedVarsName][targetName][id][targetProfile] then _G[savedVarsName][targetName][id][targetProfile] = {} end
 		-- copy table
 		_G[savedVarsName][targetName][id][targetProfile] = {}--clear before copy
 		_G[savedVarsName][targetName][id][targetProfile] = _G[savedVarsName][sourceName][id][sourceProfile]
@@ -2730,7 +2733,9 @@ function DBM:CopyAllModTypeOption(modId, sourceName, sourceProfile, Type)
 			return
 		end
 		-- prevent nil table error
+		if not _G[savedVarsName][targetName] then _G[savedVarsName][targetName] = {} end
 		if not _G[savedVarsName][targetName][id] then _G[savedVarsName][targetName][id] = {} end
+		if not _G[savedVarsName][targetName][id][targetProfile] then _G[savedVarsName][targetName][id][targetProfile] = {} end
 		-- copy table
 		for option, optionValue in pairs(_G[savedVarsName][sourceName][id][sourceProfile]) do
 			if option:find(Type) then
