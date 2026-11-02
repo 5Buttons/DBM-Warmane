@@ -82,7 +82,7 @@ local function currentFullDate()
 end
 
 DBM = {
-	Revision = parseCurseDate("20260816213747"),
+	Revision = parseCurseDate("20261102221111"),
 	DisplayVersion = "10.1.13 alpha", -- the string that is shown as version
 	ReleaseRevision = releaseDate(2024, 07, 20) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 }
@@ -828,7 +828,7 @@ do
 			-- Register valid units for retail-like mod:RegisterEvents("UNIT_SPELLCAST_START boss1")
 			mod.registeredUnitEvents = mod.registeredUnitEvents or {}
 			if next(uIds) then
-				registeredUnitEventIds[event] = (registeredUnitEventIds[event] or 0) + 1
+				registeredUnitEventIds[event] = (registeredUnitEventIds[event] or 0) + #uIds
 				mod.registeredUnitEvents[event] = uIds
 			end
 			unitMainFrame:RegisterEvent(event)
