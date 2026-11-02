@@ -495,12 +495,19 @@ local HarmItems = { -- for BossMode, to avoid iterating thru pairs of lib harmRC
 	},
 }
 
+-- map data is the same for every unit within a frame (GetTime is constant per frame), so look it up once
+local cacheTime, restrictionsActive, mapX, mapY, playerX, playerY
 local function getUnitRange(unit)
-	local restrictionsActive = DBM:HasMapRestrictions()
+	local now = GetTime()
+	if now ~= cacheTime then
+		cacheTime = now
+		restrictionsActive = DBM:HasMapRestrictions()
+		if not restrictionsActive then
+			mapX, mapY = DBM:GetMapSize()
+			playerX, playerY = GetPlayerMapPosition("player")
+		end
+	end
 	if not restrictionsActive and (UnitInRaid(unit) or UnitInParty(unit)) and UnitIsPlayer(unit) then
-		local mapX, mapY = DBM:GetMapSize()
-
-		local playerX, playerY = GetPlayerMapPosition("player")
 		local unitX, unitY = GetPlayerMapPosition(unit)
 		rangeX, rangeY = (unitX - playerX) * mapX, (unitY - playerY) * mapY
 		local range = (rangeX * rangeX + rangeY * rangeY) ^ 0.5
