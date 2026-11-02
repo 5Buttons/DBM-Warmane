@@ -542,7 +542,11 @@ do
 		if not DBT_AllPersistentOptions[name] then
 			DBT_AllPersistentOptions[name] = {}
 		end
-		DBT_AllPersistentOptions[DBM_UsedProfile][id] = DBT_AllPersistentOptions[name][id] or {}
+		local copy = {}
+		for k, v in pairs(DBT_AllPersistentOptions[name][id] or {}) do
+			copy[k] = v
+		end
+		DBT_AllPersistentOptions[DBM_UsedProfile][id] = copy
 		self:AddDefaultOptions(DBT_AllPersistentOptions[DBM_UsedProfile][id], self.DefaultOptions)
 		self.Options = DBT_AllPersistentOptions[DBM_UsedProfile][id]
 		self:Rearrange()

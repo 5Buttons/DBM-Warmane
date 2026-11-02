@@ -82,7 +82,7 @@ local function currentFullDate()
 end
 
 DBM = {
-	Revision = parseCurseDate("20260816213747"),
+	Revision = parseCurseDate("20261102221728"),
 	DisplayVersion = "10.1.13 alpha", -- the string that is shown as version
 	ReleaseRevision = releaseDate(2024, 07, 20) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 }
@@ -1648,6 +1648,14 @@ function DBM:ApplyProfile(name)
 	self:AddMsg(L.PROFILE_APPLIED:format(name))
 end
 
+local function copyTable(t)
+	local copy = {}
+	for k, v in pairs(t) do
+		copy[k] = type(v) == "table" and copyTable(v) or v
+	end
+	return copy
+end
+
 function DBM:CopyProfile(name)
 	if not name or not DBM_AllSavedOptions[name] then
 		self:AddMsg(L.PROFILE_COPY_ERROR:format(name or CL.UNKNOWN))
@@ -1656,7 +1664,7 @@ function DBM:CopyProfile(name)
 		self:AddMsg(L.PROFILE_COPY_ERROR_SELF)
 		return
 	end
-	DBM_AllSavedOptions[usedProfile] = DBM_AllSavedOptions[name]
+	DBM_AllSavedOptions[usedProfile] = copyTable(DBM_AllSavedOptions[name])
 	self:AddDefaultOptions(DBM_AllSavedOptions[usedProfile], self.DefaultOptions)
 	self.Options = DBM_AllSavedOptions[usedProfile]
 	-- rearrange position
