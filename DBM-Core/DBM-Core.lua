@@ -82,7 +82,7 @@ local function currentFullDate()
 end
 
 DBM = {
-	Revision = parseCurseDate("20260816213747"),
+	Revision = parseCurseDate("20261102221244"),
 	DisplayVersion = "10.1.13 alpha", -- the string that is shown as version
 	ReleaseRevision = releaseDate(2024, 07, 20) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 }
@@ -4861,12 +4861,15 @@ end
 
 function DBM:InGuildParty()
 	local guildName = GetGuildInfo("player")
-	local numRaid = GetNumPartyMembers()
+	local numRaid, unit = GetNumRaidMembers(), "raid"
+	if numRaid == 0 then
+		numRaid, unit = GetNumPartyMembers(), "party"
+	end
 
 	if guildName and numRaid > 0 then
 		local guldMatch = 0
 		for i = 1, numRaid do
-			local guild = GetGuildInfo("raid"..i) or ""
+			local guild = GetGuildInfo(unit..i) or ""
 			if guild == guildName then
 				guldMatch = guldMatch + 1
 			end
