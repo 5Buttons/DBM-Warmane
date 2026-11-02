@@ -1301,6 +1301,7 @@ function barPrototype:AnimateEnlarge(elapsed)
 		self.frame:SetSize(newWidth, newHeight)
 		_G[self.frame:GetName().."Bar"]:SetWidth(newWidth)
 	else
+		barIsAnimating = false
 		self.moving = nil
 		self.enlarged = true
 		tinsert(largeBars, self)
