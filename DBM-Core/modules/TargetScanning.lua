@@ -224,8 +224,10 @@ do
 			DBM:Debug("unitMonitor found a target that probably is a tank", 2)
 			mod[returnFunc](mod, DBM:GetUnitFullName(uId.."target"), uId.."target", uId)--Return results to warning function with all variables.
 		end
-		unitMonitor[uId] = nil
-		unitScanCount = unitScanCount - 1
+		if unitMonitor[uId] then -- already finished scans were counted down on success
+			unitMonitor[uId] = nil
+			unitScanCount = unitScanCount - 1
+		end
 		DBM:Debug("Boss unit target scan should be aborting for "..uId, 2)
 	end
 
