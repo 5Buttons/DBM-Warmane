@@ -82,7 +82,7 @@ local function currentFullDate()
 end
 
 DBM = {
-	Revision = parseCurseDate("20260816213747"),
+	Revision = parseCurseDate("20261102221610"),
 	DisplayVersion = "10.1.13 alpha", -- the string that is shown as version
 	ReleaseRevision = releaseDate(2024, 07, 20) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 }
@@ -10447,7 +10447,7 @@ do
 					local countVoice = self.mod.Options[self.option .. "CVoice"] or 0
 					if (type(countVoice) == "string" or countVoice > 0) then--Unfading bar, start countdown
 						DBM:Unschedule(playCountSound, id)
-						playCountdown(id, bar.timer, countVoice, bar.countdownMax, bar.requiresCombat)--timerId, timer, voice, count
+						playCountdown(id, bar.timer, countVoice, bar.countdownMax, self.requiresCombat)--timerId, timer, voice, count
 						DBM:Debug("Re-enabling a countdown on bar ID: "..id.." after a SetFade disable call")
 					end
 				end
@@ -10629,7 +10629,7 @@ do
 					DBM:Unschedule(playCountSound, id)
 					if not bar.fade then--Don't start countdown voice if it's faded bar
 						if newMinRemaining > 2 then
-							playCountdown(id, newMinRemaining, countVoice, bar.countdownMax, bar.requiresCombat)--timerId, timer, voice, count
+							playCountdown(id, newMinRemaining, countVoice, bar.countdownMax, self.requiresCombat)--timerId, timer, voice, count
 							DBM:Debug("Updating a countdown after a timer Update call for timer ID:"..id)
 						end
 					end
@@ -10661,7 +10661,7 @@ do
 						if (type(countVoice) == "string" or countVoice > 0) then
 							DBM:Unschedule(playCountSound, id)
 							if not bar.fade then--Don't start countdown voice if it's faded bar
-								playCountdown(id, newRemaining, countVoice, bar.countdownMax, bar.requiresCombat)--timerId, timer, voice, count
+								playCountdown(id, newRemaining, countVoice, bar.countdownMax, self.requiresCombat)--timerId, timer, voice, count
 								DBM:Debug("Updating a countdown after a timer AddTime call for timer ID:"..id)
 							end
 						end
@@ -10697,7 +10697,7 @@ do
 							if (type(countVoice) == "string" or countVoice > 0) then
 								if not bar.fade then--Don't start countdown voice if it's faded bar
 									if newRemaining > 2 then
-										playCountdown(id, newRemaining, countVoice, bar.countdownMax, bar.requiresCombat)--timerId, timer, voice, count
+										playCountdown(id, newRemaining, countVoice, bar.countdownMax, self.requiresCombat)--timerId, timer, voice, count
 										DBM:Debug("Updating a countdown after a timer RemoveTime call for timer ID:"..id)
 									end
 								end
@@ -10739,7 +10739,7 @@ do
 				if self.option and not bar.fade then
 					local countVoice = self.mod.Options[self.option .. "CVoice"] or 0
 					if (type(countVoice) == "string" or countVoice > 0) then
-						playCountdown(id, remaining, countVoice, bar.countdownMax, bar.requiresCombat)--timerId, timer, voice, count
+						playCountdown(id, remaining, countVoice, bar.countdownMax, self.requiresCombat)--timerId, timer, voice, count
 						DBM:Debug("Updating a countdown after a timer Resume call for timer ID:"..id)
 					end
 				end
