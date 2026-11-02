@@ -82,7 +82,7 @@ local function currentFullDate()
 end
 
 DBM = {
-	Revision = parseCurseDate("20260816213747"),
+	Revision = parseCurseDate("20261102221132"),
 	DisplayVersion = "10.1.13 alpha", -- the string that is shown as version
 	ReleaseRevision = releaseDate(2024, 07, 20) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 }
@@ -3404,7 +3404,7 @@ do
 		local ability = abilityName or CL.UNKNOWN
 		if mod and modvar and text and text ~= "" then
 			if DBM:AntiSpam(5, modvar) then--Don't allow calling same note more than once per 5 seconds
-				DBM:AddMsg(L.NOTE_SHARE_SUCCESS:format(sender, abilityName))
+				DBM:AddMsg(L.NOTE_SHARE_SUCCESS:format(sender, ability))
 				DBM:ShowNoteEditor(mod, modvar, ability, text, sender)
 			else
 				DBM:Debug(sender.." is attempting to send too many notes so notes are being throttled")
@@ -3485,7 +3485,8 @@ do
 	end
 
 	syncHandlers["DBMv4-IS"] = function(_, guid, ver, optionName)
-		DBM:Debug(("DBMv4-IS received %s %s %s"):format(guid, ver, optionName), 3)
+		if not guid or not optionName then return end
+		DBM:Debug(("DBMv4-IS received %s %s %s"):format(guid, tostring(ver), optionName), 3)
 		ver = tonumber(ver) or 0
 		if ver > (iconSetRevision[optionName] or 0) then--Save first synced version and person, ignore same version. refresh occurs only above version (fastest person)
 			iconSetRevision[optionName] = ver
@@ -3611,7 +3612,7 @@ do
 		end
 		--Abort if mapID filter is enabled and sender actually sent a mapID. if no mapID is sent, it's always passed through (IE BW pull timers)
 		if DBM.Options.DontShowPTNoID and senderMapID and tonumber(senderMapID) ~= LastInstanceMapID then return end
-		timer = tonumber(timer or 0)
+		timer = tonumber(timer) or 0
 		--We want to permit 0 itself, but block anything negative number or anything between 0 and 3
 		if (timer > 0 and timer < 3) or timer < 0 then
 			return
@@ -3745,7 +3746,7 @@ do
 
 	syncHandlers["DBMv4-BT"] = function(sender, timer)
 		if DBM.Options.DontShowUserTimers then return end
-		timer = tonumber(timer or 0)
+		timer = tonumber(timer) or 0
 		if timer > 3600 then return end
 		if (DBM:GetRaidRank(sender) == 0 and IsInGroup()) or select(2, IsInInstance()) == "pvp" then
 			return
@@ -3757,7 +3758,7 @@ do
 
 	whisperSyncHandlers["DBMv4-BTR3"] = function(sender, timer)
 		if DBM.Options.DontShowUserTimers then return end
-		timer = tonumber(timer or 0)
+		timer = tonumber(timer) or 0
 		if timer > 3600 then return end
 		DBM:Unschedule(DBM.RequestTimers)--IF we got BTR3 sync, then we know immediately RequestTimers was successful, so abort others
 		if #inCombat >= 1 then return end
@@ -3883,7 +3884,7 @@ do
 			-- Use Retail "H" syncHandler instead
 			handleSync(nil, sender, "DBMv4-H")
 		else
-			DBM:Debug(("DBMv4-Ver received %s %s %s %s from %s"):format(revision, version, displayVersion, locale, sender), 3)
+			DBM:Debug(("DBMv4-Ver received %s %s %s %s from %s"):format(tostring(revision), tostring(version), tostring(displayVersion), tostring(locale), sender), 3)
 			-- Use Retail "V" syncHandler instead
 			handleSync(nil, sender, "DBMv4-V", revision, version, displayVersion, locale, iconEnabled, VPVersion)
 		end
