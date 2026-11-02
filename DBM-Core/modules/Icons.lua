@@ -393,7 +393,7 @@ do
 				return
 			end
 			--Initialize icon method variables for event handlers
-			scansActive = scansActive + 1
+			if not iconVariables[scanId] then scansActive = scansActive + 1 end
 			if not addsIcon[scanId] then addsIcon[scanId] = mobIcon or 8 end
 			if not addsIconSet[scanId] then addsIconSet[scanId] = 0 end
 			if not iconVariables[scanId] then iconVariables[scanId] = {} end
