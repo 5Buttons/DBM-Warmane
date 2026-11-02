@@ -344,7 +344,7 @@ do
 		else
 			timer = varianceMinTimer or varianceMaxTimer -- varianceMaxTimer here could be just normal number timer, so check for varianceMinTimer, which only exists if it's a variant timer
 		end
-		if not timer or (self.numBars >= 15 and not isDummy) then
+		if not timer then
 			return
 		end
 		-- Most efficient place to block it, nil colorType instead of checking option every update
@@ -372,6 +372,9 @@ do
 			newBar:SetText(id)
 			newBar:SetIcon(icon)
 		else -- Create a new bar
+			if self.numBars >= 15 and not isDummy then
+				return
+			end
 			newBar = next(unusedBarObjects)
 			if newBar then
 				newBar.lastUpdate = GetTime()
@@ -597,10 +600,12 @@ do
 
 	function DBT:ShowMovableBar(small, large)
 		if small or small == nil then
-			self:CreateBar(20, "Move1", "Interface\\Icons\\Spell_Nature_WispSplode", nil, true):SetText(DBM_CORE_L.MOVABLE_BAR)
+			local bar = self:CreateBar(20, "Move1", "Interface\\Icons\\Spell_Nature_WispSplode", nil, true)
+			if bar then bar:SetText(DBM_CORE_L.MOVABLE_BAR) end
 		end
 		if large or large == nil then
-			self:CreateBar(20, "Move2", "Interface\\Icons\\Spell_Nature_WispSplode", true):SetText(DBM_CORE_L.MOVABLE_BAR)
+			local bar = self:CreateBar(20, "Move2", "Interface\\Icons\\Spell_Nature_WispSplode", true)
+			if bar then bar:SetText(DBM_CORE_L.MOVABLE_BAR) end
 		end
 		updateClickThrough(self, false)
 		self.movable = true
