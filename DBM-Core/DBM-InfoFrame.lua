@@ -10,7 +10,7 @@ local DBM = DBM
 local L = DBM_CORE_L
 local UnitClass, GetTime, GetPartyAssignment, UnitGroupRolesAssigned, GetRaidTargetIndex, UnitExists, UnitName, UnitHealth, UnitPower, UnitPowerMax, UnitIsDeadOrGhost, UnitThreatSituation, UnitIsUnit, UIDropDownMenu_CreateInfo, UIDropDownMenu_AddButton = UnitClass, GetTime, GetPartyAssignment, UnitGroupRolesAssigned, GetRaidTargetIndex, UnitExists, UnitName, UnitHealth, UnitPower, UnitPowerMax, UnitIsDeadOrGhost, UnitThreatSituation, UnitIsUnit, UIDropDownMenu_CreateInfo, UIDropDownMenu_AddButton
 local error, tostring, type, pairs, ipairs, select, tonumber, tsort, twipe, mfloor, mmax, mmin, mrandom, schar, ssplit = error, tostring, type, pairs, ipairs, select, tonumber, table.sort, table.wipe, math.floor, math.max, math.min, math.random, string.char, string.split
-local ADDITIONAL_POWER_BAR_INDEX = ADDITIONAL_POWER_BAR_INDEX or 0
+local ADDITIONAL_POWER_BAR_INDEX = ADDITIONAL_POWER_BAR_INDEX -- nil on 3.3.5a, index 0 would be mana
 local NORMAL_FONT_COLOR, SPELL_FAILED_OUT_OF_RANGE = NORMAL_FONT_COLOR, SPELL_FAILED_OUT_OF_RANGE
 local RAID_CLASS_COLORS = _G["CUSTOM_CLASS_COLORS"] or RAID_CLASS_COLORS-- for Phanx' Class Colors
 
@@ -445,7 +445,7 @@ local function updateEnemyPower()
 				end
 				-- Alternate Power
 				local currentAltPower, maxAltPower = UnitPower(specificUnit, ADDITIONAL_POWER_BAR_INDEX), UnitPowerMax(specificUnit, ADDITIONAL_POWER_BAR_INDEX)
-				if maxAltPower and maxAltPower > 0 then
+				if ADDITIONAL_POWER_BAR_INDEX and maxAltPower and maxAltPower > 0 then
 					if currentAltPower / maxAltPower * 100 >= threshold then
 						lines[UnitName(specificUnit)] = L.INFOFRAME_ALT .. currentAltPower
 					end
@@ -463,7 +463,7 @@ local function updateEnemyPower()
 				end
 				-- Alternate Power
 				local currentAltPower, maxAltPower = UnitPower(uId, ADDITIONAL_POWER_BAR_INDEX), UnitPowerMax(uId, ADDITIONAL_POWER_BAR_INDEX)
-				if maxAltPower and maxAltPower > 0 then
+				if ADDITIONAL_POWER_BAR_INDEX and maxAltPower and maxAltPower > 0 then
 					if currentAltPower / maxAltPower * 100 >= threshold then
 						lines[UnitName(uId)] = L.INFOFRAME_ALT .. currentAltPower
 					end
