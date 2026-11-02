@@ -719,7 +719,7 @@ function DBT:UpdateBar(id, elapsed, totalTime)
 				bar:ApplyStyle()
 			end
 			bar:SetTimer(totalTime or bar.totalTime)
-			bar:SetElapsed(elapsed or self.totalTime - self.timer)
+			bar:SetElapsed(elapsed or bar.totalTime - bar.timer)
 			return true
 		end
 	end
