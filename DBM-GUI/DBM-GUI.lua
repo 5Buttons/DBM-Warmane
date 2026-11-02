@@ -650,7 +650,7 @@ do
 							popup.importFunc = function()
 								local modOptions = {}
 								for _, soundSetting in ipairs(errors) do
-									local modID, settingName = soundSetting:match("([^-]+)-([^-]+)")
+									local modID, settingName = soundSetting:match("^(.+)%-([^-]+)$")
 									if not modOptions[modID] then
 										modOptions[modID] = DBM:GetModByName(modID).DefaultOptions
 									end
