@@ -365,7 +365,7 @@ do
 		for i = 1, 10 do
 			local unitId = "boss"..i
 			if UnitExists(unitId) and UnitIsVisible(unitId) then--Hopefully enough failsafe against icons failing
-				for _, scanId in ipairs(scanExpires) do
+				for scanId in pairs(scanExpires) do
 					executeMarking(scanId, unitId)
 				end
 			end
