@@ -530,9 +530,12 @@ local function updateMultiEnemyAbsorb()
 	local spellInput = value[1]
 	local totalAbsorb = value[2]
 	local guidTable = value[3]--Multi target by table
-	local guidTracked = {}
+	local guidTracked, found, wanted = {}, 0, 0
+	for _ in pairs(guidTable) do
+		wanted = wanted + 1
+	end
 	for i = 1, 10 do
-		if #guidTable == #guidTracked then--Stop searching, found everything we're looking for.
+		if found == wanted then--Stop searching, found everything we're looking for.
 			break
 		end
 		local uId = "boss" .. i
@@ -540,6 +543,7 @@ local function updateMultiEnemyAbsorb()
 			local targetGUID = UnitGUID(uId)
 			if guidTable[targetGUID] and not guidTracked[targetGUID] then
 				guidTracked[targetGUID] = true
+				found = found + 1
 				local absorbAmount
 				if spellInput then -- Get specific spell absorb
 					absorbAmount = SpecializedAbsorbs:UnitEffect(targetGUID, spellInput)
@@ -557,13 +561,14 @@ local function updateMultiEnemyAbsorb()
 		end
 	end
 	for unitId in DBM:GetGroupMembers() do--Do not use self on this function, because self might be bossModPrototype
-		if #guidTable == #guidTracked then--Stop searching, found everything we're looking for.
+		if found == wanted then--Stop searching, found everything we're looking for.
 			break
 		end
 		local uId = unitId .. "target"
-		local targetGUID = UnitGUID(unitId)
+		local targetGUID = UnitGUID(uId)
 		if guidTable[targetGUID] and not guidTracked[targetGUID] then
 			guidTracked[targetGUID] = true
+			found = found + 1
 			local absorbAmount
 			if spellInput then -- Get specific spell absorb
 				absorbAmount = SpecializedAbsorbs:UnitEffect(UnitGUID(uId), spellInput)
