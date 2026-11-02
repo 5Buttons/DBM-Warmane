@@ -82,7 +82,7 @@ local function currentFullDate()
 end
 
 DBM = {
-	Revision = parseCurseDate("20260816213747"),
+	Revision = parseCurseDate("20261102221604"),
 	DisplayVersion = "10.1.13 alpha", -- the string that is shown as version
 	ReleaseRevision = releaseDate(2024, 07, 20) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 }
@@ -10160,7 +10160,7 @@ do
 				hasVariance = self.hasVariance
 				maxTimer, minTimer = parseVarianceFromTimer(self.timerStringWithVariance) -- use highest possible value as the actual End timer
 				timerStringWithVariance = ("v%s-%s"):format(minTimer + timer, maxTimer + timer) -- rebuild timer string with delay applied
-				timer = (DBT.Options.VarianceEnabled and maxTimer or minTimer) + timer
+				minTimer, timer = minTimer + timer, (DBT.Options.VarianceEnabled and maxTimer or minTimer) + timer
 			end
 		end
 --		if DBM.Options.DebugMode and self.mod.id ~= "TestMod" then
