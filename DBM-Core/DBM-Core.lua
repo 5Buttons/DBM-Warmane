@@ -82,7 +82,7 @@ local function currentFullDate()
 end
 
 DBM = {
-	Revision = parseCurseDate("20260816213747"),
+	Revision = parseCurseDate("20261102221602"),
 	DisplayVersion = "10.1.13 alpha", -- the string that is shown as version
 	ReleaseRevision = releaseDate(2024, 07, 20) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 }
@@ -8502,7 +8502,7 @@ do
 		local catType = "announce"--Default to General announce
 		if not self.NoSortAnnounce then--ALL announce objects will be assigned "announce", usually for mods that sort by phase instead
 			--Change if Personal or Other
-			if announceType == "target" or self.announceType == "targetdistance" or announceType == "targetcount" or self.announceType == "targetcountdistance" or announceType == "stack" then
+			if announceType == "target" or announceType == "targetdistance" or announceType == "targetcount" or announceType == "targetcountdistance" or announceType == "stack" then
 				catType = "announceother"
 			end
 		end
