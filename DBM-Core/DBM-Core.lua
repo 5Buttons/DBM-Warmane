@@ -82,7 +82,7 @@ local function currentFullDate()
 end
 
 DBM = {
-	Revision = parseCurseDate("20260816213747"),
+	Revision = parseCurseDate("20261102221619"),
 	DisplayVersion = "10.1.13 alpha", -- the string that is shown as version
 	ReleaseRevision = releaseDate(2024, 07, 20) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 }
@@ -1056,7 +1056,7 @@ do
 						match = true
 					end
 				end
-				if #mods == 0 or (match and event:sub(0, 5) == "UNIT_" and event:sub(0, -10) ~= "_UNFILTERED" and event ~= "UNIT_DIED" and event ~= "UNIT_DESTROYED") then -- unit events have their own reference count
+				if #mods == 0 or (match and event:sub(0, 5) == "UNIT_" and event:sub(-11) ~= "_UNFILTERED" and event ~= "UNIT_DIED" and event ~= "UNIT_DESTROYED") then -- unit events have their own reference count
 					unregisterUEvent(self, event)
 				end
 				if #mods == 0 then
@@ -1122,7 +1122,7 @@ do
 							end
 						end
 					end
-					if #mods == 0 or (match and event:sub(0, 5) == "UNIT_" and event:sub(0, -10) ~= "_UNFILTERED" and event ~= "UNIT_DIED" and event ~= "UNIT_DESTROYED") then
+					if #mods == 0 or (match and event:sub(0, 5) == "UNIT_" and event:sub(-11) ~= "_UNFILTERED" and event ~= "UNIT_DIED" and event ~= "UNIT_DESTROYED") then
 						unregisterUEvent(self, event)
 						DBM:Debug("unregisterUEvent for unit event "..event.." unregistered", 3)
 					end
