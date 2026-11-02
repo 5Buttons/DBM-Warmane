@@ -474,7 +474,7 @@ local function GetSpecializationGroup()
 		for i=1, MAX_TALENT_TABS do
 			if ( i <= numTabs ) then
 				local _, _, pointsSpent = GetTalentTabInfo(i)
-				if pointsSpent > highestPointsSpent then
+				if pointsSpent >= highestPointsSpent then -- same tie rule as core GetSpecialization
 					highestPointsSpent = pointsSpent
 					currentSpecGroup = i
 				end
