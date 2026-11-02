@@ -82,7 +82,7 @@ local function currentFullDate()
 end
 
 DBM = {
-	Revision = parseCurseDate("20260816213747"),
+	Revision = parseCurseDate("20261102222255"),
 	DisplayVersion = "10.1.13 alpha", -- the string that is shown as version
 	ReleaseRevision = releaseDate(2024, 07, 20) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 }
@@ -3024,7 +3024,7 @@ function DBM:UPDATE_BATTLEFIELD_STATUS(queueID)
 		if GetBattlefieldStatus(i) == "confirm" then
 			local timerEnabled = self.Options.ShowQueuePop and not self.Options.DontShowEventTimers
 			queuedBattlefield[i] = select(2, GetBattlefieldStatus(i))
-			local expiration = GetBattlefieldPortExpiration(queueID)
+			local expiration = GetBattlefieldPortExpiration(i)
 			local timerIcon = GetBattlefieldFaction("player") == "Alliance" and "Interface\\Icons\\INV_BannerPVP_02" or "Interface\\Icons\\INV_BannerPVP_01"
 			if timerEnabled then
 				DBT:CreateBar(expiration or 85, queuedBattlefield[i], timerIcon)
