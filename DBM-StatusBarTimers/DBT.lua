@@ -1110,6 +1110,7 @@ function barPrototype:RemoveFromList()
 end
 
 function barPrototype:Cancel()
+	if self.dead then return end
 	self.frame:Hide()
 	self:RemoveFromList()
 	DBT.bars[self] = nil
