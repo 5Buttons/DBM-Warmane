@@ -610,8 +610,10 @@ do
 			local function actuallyImport(importTable)
 				local profileID = playerLevel > 9 and DBM_UseDualProfile and GetSpecializationGroup() or 0
 				for _, id in ipairs(DBM.ModLists[addon.modId]) do
-					_G[addon.modId:gsub("-", "") .. "_AllSavedVars"][fullname][id][profileID] = importTable[id]
-					DBM:GetModByName(id).Options = importTable[id]
+					if type(importTable[id]) == "table" then -- skip mods missing from the import (e.g. export from another raid)
+						_G[addon.modId:gsub("-", "") .. "_AllSavedVars"][fullname][id][profileID] = importTable[id]
+						DBM:GetModByName(id).Options = importTable[id]
+					end
 				end
 				DBM:AddMsg("Profile imported.")
 			end
