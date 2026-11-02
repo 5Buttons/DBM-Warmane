@@ -1292,9 +1292,9 @@ function barPrototype:AnimateEnlarge(elapsed)
 		local calc = melapsed / 1
 		local newX = self.moveOffsetX + (DBT.Options.HugeBarXOffset - self.moveOffsetX) * calc
 		local newY = self.moveOffsetY + (DBT.Options.HugeBarYOffset - self.moveOffsetY) * calc
-		local newWidth = DBT.Options.HugeWidth + (DBT.Options.Width - DBT.Options.HugeWidth) * calc
-		local newHeight = DBT.Options.HugeHeight + (DBT.Options.Height - DBT.Options.HugeHeight) * calc
-		local newScale = DBT.Options.HugeScale + (DBT.Options.Scale - DBT.Options.HugeScale) * calc
+		local newWidth = DBT.Options.Width + (DBT.Options.HugeWidth - DBT.Options.Width) * calc
+		local newHeight = DBT.Options.Height + (DBT.Options.HugeHeight - DBT.Options.Height) * calc
+		local newScale = DBT.Options.Scale + (DBT.Options.HugeScale - DBT.Options.Scale) * calc
 		self.frame:ClearAllPoints()
 		self.frame:SetPoint(self.movePoint, self.moveAnchor, self.movePoint, newX, newY)
 		self.frame:SetScale(newScale)
