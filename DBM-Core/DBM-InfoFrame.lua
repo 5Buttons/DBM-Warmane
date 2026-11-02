@@ -650,7 +650,7 @@ local function updatePlayerBuffs()
 	local spellName = value[1]
 	local tankIgnored = value[2]
 	for uId in DBM:GetGroupMembers() do
-		if tankIgnored and (UnitGroupRolesAssigned(uId) == "TANK" or GetPartyAssignment("MAINTANK", uId, 1)) then
+		if tankIgnored and (UnitGroupRolesAssigned(uId) or GetPartyAssignment("MAINTANK", uId, 1)) then
 		else
 			if not DBM:UnitBuff(uId, spellName) and not UnitIsDeadOrGhost(uId) then
 				lines[DBM:GetUnitFullName(uId)] = ""
@@ -667,7 +667,7 @@ local function updateGoodPlayerDebuffs()
 	local spellInput = value[1]
 	local tankIgnored = value[2]
 	for uId in DBM:GetGroupMembers() do
-		if tankIgnored and (UnitGroupRolesAssigned(uId) == "TANK" or GetPartyAssignment("MAINTANK", uId, 1)) then
+		if tankIgnored and (UnitGroupRolesAssigned(uId) or GetPartyAssignment("MAINTANK", uId, 1)) then
 		else
 			if not DBM:UnitDebuff(uId, spellInput) and not UnitIsDeadOrGhost(uId) then
 				lines[DBM:GetUnitFullName(uId)] = ""
@@ -685,7 +685,7 @@ local function updateBadPlayerDebuffs()
 	local spellInput = value[1]
 	local tankIgnored = value[2]
 	for uId in DBM:GetGroupMembers() do
-		if tankIgnored and (UnitGroupRolesAssigned(uId) == "TANK" or GetPartyAssignment("MAINTANK", uId, 1)) then
+		if tankIgnored and (UnitGroupRolesAssigned(uId) or GetPartyAssignment("MAINTANK", uId, 1)) then
 		else
 			if DBM:UnitDebuff(uId, spellInput) and not UnitIsDeadOrGhost(uId) then
 				lines[DBM:GetUnitFullName(uId)] = ""
@@ -741,7 +741,7 @@ local function updateReverseBadPlayerDebuffs()
 	local spellInput = value[1]
 	local tankIgnored = value[2]
 	for uId in DBM:GetGroupMembers() do
-		if tankIgnored and (UnitGroupRolesAssigned(uId) == "TANK" or GetPartyAssignment("MAINTANK", uId, 1)) then
+		if tankIgnored and (UnitGroupRolesAssigned(uId) or GetPartyAssignment("MAINTANK", uId, 1)) then
 		else
 			if not DBM:UnitDebuff(uId, spellInput) and not UnitIsDeadOrGhost(uId) and not DBM:UnitBuff(uId, 27827) then--27827 Spirit of Redemption. This particular info frame wants to ignore this
 				lines[DBM:GetUnitFullName(uId)] = ""
@@ -783,7 +783,7 @@ local function updatePlayerAggro()
 	local aggroType = value[1]
 	local tankIgnored = value[2]
 	for uId in DBM:GetGroupMembers() do
-		if tankIgnored and (UnitGroupRolesAssigned(uId) == "TANK" or GetPartyAssignment("MAINTANK", uId, 1)) then
+		if tankIgnored and (UnitGroupRolesAssigned(uId) or GetPartyAssignment("MAINTANK", uId, 1)) then
 		else
 			local currentThreat = UnitThreatSituation(uId) or 0
 			if currentThreat >= aggroType then
@@ -799,7 +799,7 @@ local function updatePlayerTargets()
 	twipe(lines)
 	local cId = value[1]
 	for uId, _ in DBM:GetGroupMembers() do
-		if DBM:GetUnitCreatureId(uId .. "target") ~= cId and (UnitGroupRolesAssigned(uId) == "DAMAGER" or UnitGroupRolesAssigned(uId) == "NONE") then
+		if DBM:GetUnitCreatureId(uId .. "target") ~= cId and not (UnitGroupRolesAssigned(uId) or select(2, UnitGroupRolesAssigned(uId))) then
 			lines[DBM:GetUnitFullName(uId)] = ""
 		end
 	end
