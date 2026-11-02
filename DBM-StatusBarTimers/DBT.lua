@@ -272,9 +272,12 @@ do
 		spark:SetSize(32, 64)
 		spark:SetTexture("Interface\\AddOns\\DBM-StatusBarTimers\\textures\\Spark.blp")
 		spark:SetBlendMode("ADD")
-		local timer = bar:CreateFontString("$parentTimer", "OVERLAY", "GameFontHighlightSmall")
+		local text = CreateFrame("Frame", nil, frame)
+		text:SetAllPoints(bar)
+		text:SetFrameLevel(bar:GetFrameLevel() + 1)
+		local timer = text:CreateFontString("DBT_Bar_" .. fCounter .. "BarTimer", "OVERLAY", "GameFontHighlightSmall")
 		timer:SetPoint("RIGHT", bar, "RIGHT", -1, 0.5)
-		local name = bar:CreateFontString("$parentName", "OVERLAY", "GameFontHighlightSmall")
+		local name = text:CreateFontString("DBT_Bar_" .. fCounter .. "BarName", "OVERLAY", "GameFontHighlightSmall")
 		name:SetPoint("LEFT", bar, "LEFT", 7, 0.5)
 		name:SetPoint("RIGHT", timer, "LEFT", -7, 0)
 		name:SetWordWrap(false)
@@ -1166,30 +1169,22 @@ function barPrototype:ApplyStyle()
 	end
 	local barTextColorRed, barTextColorGreen, barTextColorBlue = barOptions.TextColorR, barOptions.TextColorG, barOptions.TextColorB
 	local barHeight, barHugeHeight, barWidth, barHugeWidth = barOptions.Height, barOptions.HugeHeight, barOptions.Width, barOptions.HugeWidth
-	local frameAlpha = enlarged and barOptions.HugeAlpha or barOptions.Alpha
+	local barAlpha = enlarged and barOptions.HugeAlpha or barOptions.Alpha
 	if barOptions.FadeBars and self.fade then
-		frameAlpha = frameAlpha / 2
+		barAlpha = barAlpha / 2
 	end
-	name:SetTextColor(barTextColorRed, barTextColorGreen, barTextColorBlue, frameAlpha)
-	timer:SetTextColor(barTextColorRed, barTextColorGreen, barTextColorBlue, frameAlpha)
+	frame:SetAlpha(1)
+	bar:SetAlpha(barAlpha)
+	name:SetTextColor(barTextColorRed, barTextColorGreen, barTextColorBlue, barAlpha)
+	timer:SetTextColor(barTextColorRed, barTextColorGreen, barTextColorBlue, barAlpha)
 	if barOptions.IconLeft then icon1:Show() else icon1:Hide() end
 	if barOptions.IconRight then icon2:Show() else icon2:Hide() end
 	if enlarged then
 		bar:SetSize(barHugeWidth, barHugeHeight)
 		frame:SetScale(barOptions.HugeScale)
-		if barOptions.FadeBars and self.fade then
-			frame:SetAlpha(barOptions.HugeAlpha / 2)
-		else
-			frame:SetAlpha(barOptions.HugeAlpha)
-		end
 	else
 		bar:SetSize(barWidth, barHeight)
 		frame:SetScale(barOptions.Scale)
-		if barOptions.FadeBars and self.fade and barOptions.Alpha ~= 0 then
-			frame:SetAlpha(barOptions.Alpha / 2)
-		else
-			frame:SetAlpha(barOptions.Alpha)
-		end
 	end
 	if barOptions.IconLocked then
 		local sizeHeight = enlarged and barHugeHeight or barHeight
