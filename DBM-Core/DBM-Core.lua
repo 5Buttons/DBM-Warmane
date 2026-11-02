@@ -82,7 +82,7 @@ local function currentFullDate()
 end
 
 DBM = {
-	Revision = parseCurseDate("20260816213747"),
+	Revision = parseCurseDate("20261102221200"),
 	DisplayVersion = "10.1.13 alpha", -- the string that is shown as version
 	ReleaseRevision = releaseDate(2024, 07, 20) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 }
@@ -4401,12 +4401,15 @@ do
 		end
 	end
 
-	whisperSyncHandlers["DBMv4-TimerInfo"] = function(sender, mod, timeLeft, totalTime, id, paused, ...)
+	whisperSyncHandlers["DBMv4-TimerInfo"] = function(sender, mod, timeLeft, totalTime, id, ...)
 		mod = DBM:GetModByName(mod or "")
 		timeLeft = tonumber(timeLeft or 0)
 		totalTime = tonumber(totalTime or 0)
+		-- the sent uId carries the timer args tab separated, so the paused flag is always the last field
+		local args = {...}
+		local paused = tremove(args) == "1"
 		if mod and timeLeft and timeLeft > 0 and totalTime and totalTime > 0 and id then
-			DBM:ReceiveTimerInfo(sender, mod, timeLeft, totalTime, id, paused and paused == "1" and true or false, ...)
+			DBM:ReceiveTimerInfo(sender, mod, timeLeft, totalTime, id, paused, unpack(args))
 		end
 	end
 
