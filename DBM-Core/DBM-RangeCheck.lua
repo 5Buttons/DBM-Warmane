@@ -1349,8 +1349,10 @@ do
 		local r = tonumber(msg)
 		if not r then
 			DBM.RangeCheck:DisableBossMode()
-		else
+		elseif HarmItems[r] then
 			DBM.RangeCheck:SetBossRange(r, "target")
+		else
+			DBM:AddMsg(("Boss mode range \"%d yd\" is not supported."):format(r))
 		end
 	end
 end
