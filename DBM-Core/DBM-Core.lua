@@ -82,7 +82,7 @@ local function currentFullDate()
 end
 
 DBM = {
-	Revision = parseCurseDate("20260816213747"),
+	Revision = parseCurseDate("20261102221359"),
 	DisplayVersion = "10.1.13 alpha", -- the string that is shown as version
 	ReleaseRevision = releaseDate(2024, 07, 20) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 }
@@ -5172,9 +5172,10 @@ do
 				end
 			end
 			if savedDifficulty == "worldboss" and mod.WBEsync then
-				if lastBossEngage[modId..playerRealm] and (GetTime() - lastBossEngage[modId..playerRealm] < 30) then return end--Someone else synced in last 10 seconds so don't send out another sync to avoid needless sync spam.
-				lastBossEngage[modId..playerRealm] = GetTime()--Update last engage time, that way we ignore our own sync
-				SendWorldSync(self, "WBE", modId.."\t"..playerRealm.."\t"..startHp.."\t8\t"..name)
+				if not (lastBossEngage[modId..playerRealm] and (GetTime() - lastBossEngage[modId..playerRealm] < 30)) then--Someone else synced in last 30 seconds so don't send out another sync to avoid needless sync spam.
+					lastBossEngage[modId..playerRealm] = GetTime()--Update last engage time, that way we ignore our own sync
+					SendWorldSync(self, "WBE", modId.."\t"..playerRealm.."\t"..startHp.."\t8\t"..name)
+				end
 			end
 			if self.Options.FixCLEUOnCombatStart then
 				self:Schedule(0.5, CombatLogClearEntries) -- schedule prevents client crash with DBM:StartCombat function (tested on Leotheras)
@@ -5383,9 +5384,10 @@ do
 					BossBanner:OnEvent("BOSS_KILL", modId, encounterName) -- modId is mocked up as encounterID, encounterName is mocked up via mod translation table
 				end
 				if savedDifficulty == "worldboss" and mod.WBEsync then
-					if lastBossDefeat[modId..playerRealm] and (GetTime() - lastBossDefeat[modId..playerRealm] < 30) then return end--Someone else synced in last 10 seconds so don't send out another sync to avoid needless sync spam.
-					lastBossDefeat[modId..playerRealm] = GetTime()--Update last defeat time before we send it, so we don't handle our own sync
-					SendWorldSync(self, "WBD", modId.."\t"..playerRealm.."\t8\t"..name)
+					if not (lastBossDefeat[modId..playerRealm] and (GetTime() - lastBossDefeat[modId..playerRealm] < 30)) then--Someone else synced in last 30 seconds so don't send out another sync to avoid needless sync spam.
+						lastBossDefeat[modId..playerRealm] = GetTime()--Update last defeat time before we send it, so we don't handle our own sync
+						SendWorldSync(self, "WBD", modId.."\t"..playerRealm.."\t8\t"..name)
+					end
 				end
 				if self.Options.EventSoundVictory2 and self.Options.EventSoundVictory2 ~= "None" and self.Options.EventSoundVictory2 ~= "" then
 					if self.Options.EventSoundVictory2 == "Random" then
